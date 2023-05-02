@@ -1,10 +1,8 @@
 package ru.hogwarts.school.service;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repositories.AvatarRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Collection;
@@ -13,14 +11,10 @@ import java.util.stream.Collectors;
 @Service
 public class StudentService {
 
-    @Value("${avatars.dir.path}")
-    private String avatarsDir;
     private final StudentRepository studentRepository;
-    private final AvatarRepository avatarRepository;
 
-    public StudentService(StudentRepository studentRepository, AvatarRepository avatarRepository) {
+    public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
-        this.avatarRepository = avatarRepository;
     }
 
     public Student addStudent(Student student) {
@@ -28,7 +22,7 @@ public class StudentService {
     }
 
     public Student findStudent(long id) {
-        return studentRepository.findById(id).get();
+        return studentRepository.findById(id).orElse(null);
     }
 
     public Student editStudent(Student student) {
@@ -53,6 +47,6 @@ public class StudentService {
     }
 
     public Faculty findFacultyByStudent(long studentId) {
-        return studentRepository.findById(studentId).get().getFaculty();
+        return studentRepository.findById(studentId).orElse(null).getFaculty();
     }
 }

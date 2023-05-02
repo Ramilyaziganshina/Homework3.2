@@ -8,6 +8,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.AvatarRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
 
+import javax.transaction.Transactional;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,26 +16,27 @@ import java.nio.file.Path;
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 
 @Service
+@Transactional
 public class AvatarService {
-
-    private final AvatarRepository avatarRepository;
-    private final StudentRepository studentRepository;
     @Value("${path.to.avatars.folder}")
     private String avatarsDir;
 
-    public AvatarService(AvatarRepository avatarRepository, StudentRepository studentRepository) {
+    private final StudentService studentService;
+    private final AvatarRepository avatarRepository;
+
+    public AvatarService(AvatarRepository avatarRepository, StudentService studentService) {
         this.avatarRepository = avatarRepository;
-        this.studentRepository = studentRepository;
+        this.studentService = studentService;
     }
 
     public Avatar findAvatar(long studentId) {
-        return avatarRepository.findByStudentId(studentId).orElseThrow();
+        return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
     public void uploadAvatar(Long studentId, MultipartFile file) throws IOException {
-        Student student = studentRepository.getReferenceById(studentId);
+        Student student = studentService.findStudent(studentId);
 
-        Path filePath = Path.of(avatarsDir, student + "." + getExtension(file.getOriginalFilename()));
+        Path filePath = Path.of(avatarsDir, studentId + "." + getExtension(file.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
 
@@ -46,7 +48,7 @@ public class AvatarService {
             bis.transferTo(bos);
         }
 
-        Avatar avatar = avatarRepository.findByStudentId(studentId).orElseGet(Avatar::new);
+        Avatar avatar = findAvatar(studentId);
         avatar.setStudent(student);
         avatar.setFilePath(filePath.toString());
         avatar.setFileSize(file.getSize());

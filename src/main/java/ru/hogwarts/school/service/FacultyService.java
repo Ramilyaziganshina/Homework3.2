@@ -22,7 +22,7 @@ public class FacultyService {
     }
 
     public Faculty findFaculty(long id) {
-        return facultyRepository.findById(id).get();
+        return facultyRepository.findById(id).orElse(null);
     }
 
     public Faculty editFaculty(Faculty faculty) {
@@ -52,6 +52,6 @@ public class FacultyService {
     }
 
     public Collection<Student> findStudentsByFacultyId(long facultyId) {
-        return facultyRepository.findById(facultyId).get().getStudents();
+        return facultyRepository.findById(facultyId).orElse(null).getStudents();
     }
 }
