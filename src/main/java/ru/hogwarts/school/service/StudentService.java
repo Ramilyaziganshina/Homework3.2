@@ -17,8 +17,7 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public Student addStudent(long id, String name, int age) {
-        Student student = new Student(id, name, age);
+    public Student addStudent(Student student) {
         return studentRepository.save(student);
     }
 
@@ -43,7 +42,7 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Collection<Student> findByAgeBetween(long age, long age2) {
+    public Collection<Student> findByAgeBetween(Integer age, Integer age2) {
         return studentRepository.findStudentsByAgeBetween(age, age2);
     }
 

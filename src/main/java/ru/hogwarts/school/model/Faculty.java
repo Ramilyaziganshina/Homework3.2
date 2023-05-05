@@ -1,5 +1,7 @@
 package ru.hogwarts.school.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Objects;
@@ -11,22 +13,19 @@ public class Faculty {
             generator = "faculty_seq")
     private long id;
     private String name;
-    private String color;
+    private String colour;
 
-    public void setStudents(Collection<Student> students) {
-        this.students = students;
-    }
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "faculty", fetch = FetchType.LAZY)
     private Collection<Student> students;
 
     public Faculty() {
     }
 
-    public Faculty(long id, String name, String color) {
+    public Faculty(long id, String name, String colour) {
         this.id = id;
         this.name = name;
-        this.color = color;
+        this.colour = colour;
     }
 
     public long getId() {
@@ -45,12 +44,12 @@ public class Faculty {
         this.name = name;
     }
 
-    public String getColor() {
-        return color;
+    public String getColour() {
+        return colour;
     }
 
-    public void setColor(String color) {
-        this.color = color;
+    public void setColour(String colour) {
+        this.colour = colour;
     }
 
     public Collection<Student> getStudents() {
@@ -62,12 +61,12 @@ public class Faculty {
         if (this == o) return true;
         if (!(o instanceof Faculty)) return false;
         Faculty faculty = (Faculty) o;
-        return id == faculty.id && Objects.equals(name, faculty.name) && Objects.equals(color, faculty.color);
+        return id == faculty.id && Objects.equals(name, faculty.name) && Objects.equals(colour, faculty.colour);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, color);
+        return Objects.hash(id, name, colour);
     }
 
     @Override
@@ -75,7 +74,7 @@ public class Faculty {
         return "Faculty{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", color='" + color + '\'' +
+                ", colour='" + colour + '\'' +
                 '}';
     }
 }

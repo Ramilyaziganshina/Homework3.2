@@ -30,12 +30,12 @@ class FacultyServiceTest {
     void addFaculty_success() {
         long id = 1;
         String name = "Griffindor";
-        String color = "red";
-        Faculty griffindor = new Faculty(id, name, color);
+        String colour = "red";
+        Faculty griffindor = new Faculty(id, name, colour);
 
         when(facultyRepository.save(griffindor)).thenReturn(griffindor);
 
-        Faculty actualResult = facultyService.addFaculty(id, name, color);
+        Faculty actualResult = facultyService.addFaculty(griffindor);
 
         assertEquals(griffindor, actualResult);
     }

@@ -27,8 +27,8 @@ public class StudentController {
     }
 
     @PostMapping
-    public Student createStudent(@RequestParam long id, @RequestParam String name, @RequestParam int age) {
-        return studentService.addStudent(id, name, age);
+    public Student createStudent(@RequestBody Student student) {
+        return studentService.addStudent(student);
     }
 
     @PutMapping
@@ -41,7 +41,7 @@ public class StudentController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity deleteStudent(@PathVariable long id) {
+    public ResponseEntity<?> deleteStudent(@PathVariable long id) {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
     }
@@ -50,14 +50,14 @@ public class StudentController {
     public ResponseEntity<Collection<Student>> findStudentsByAgeBetween(
             @PathVariable(required = false) Integer age,
             @PathVariable(required = false) Integer age2) {
-        if (age != null && age2 != null && age > 0 && age2 > 0) {
-            return ResponseEntity.ok(studentService.findByAgeBetween(age, age2));
+        if (age == null || age2 == null) {
+            return ResponseEntity.ok(studentService.getAll());
         }
-        return ResponseEntity.ok(studentService.getAll());
+        return ResponseEntity.ok(studentService.findByAgeBetween(age, age2));
     }
 
     @GetMapping("/{studentId}/students")
-    public Faculty findFacultyByStudentId(@PathVariable long studentId) {
+    public Faculty findFacultyByStudentId(@PathVariable(required = false) long studentId) {
         return studentService.findFacultyByStudent(studentId);
     }
 }

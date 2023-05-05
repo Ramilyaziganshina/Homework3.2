@@ -17,8 +17,7 @@ public class FacultyService {
         this.facultyRepository = facultyRepository;
     }
 
-    public Faculty addFaculty(long id, String name, String color) {
-        Faculty faculty = new Faculty(id, name, color);
+    public Faculty addFaculty(Faculty faculty) {
         return facultyRepository.save(faculty);
     }
 
@@ -35,17 +34,17 @@ public class FacultyService {
     }
 
 
-    public Collection<Faculty> findByColor(String color) {
+    public Collection<Faculty> findByColour(String colour) {
         return facultyRepository.findAll().stream()
-                .filter(f -> f.getColor().equals(color)).collect(Collectors.toList());
+                .filter(f -> f.getColour().equals(colour)).collect(Collectors.toList());
     }
 
     public Collection<Faculty> getAll() {
         return facultyRepository.findAll();
     }
 
-    public Collection<Faculty> findByColorIgnoreCase(String color) {
-        return facultyRepository.findByColorIgnoreCase(color);
+    public Collection<Faculty> findByColourIgnoreCase(String colour) {
+        return facultyRepository.findByColourIgnoreCase(colour);
     }
 
     public Collection<Faculty> findByNameIgnoreCase(String name) {

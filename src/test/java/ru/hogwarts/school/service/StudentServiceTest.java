@@ -34,7 +34,7 @@ class StudentServiceTest {
 
         when(studentRepository.save(harry)).thenReturn(harry);
 
-        Student actualResult = studentService.addStudent(id, name, age);
+        Student actualResult = studentService.addStudent(harry);
 
         assertEquals(harry, actualResult);
     }

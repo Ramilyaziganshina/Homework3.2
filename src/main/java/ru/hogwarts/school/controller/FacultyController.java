@@ -18,7 +18,7 @@ public class FacultyController {
         this.facultyService = facultyService;
     }
 
-    @GetMapping("{id}")
+    @GetMapping("{id}")// GET http://localhost:8080/faculty/1
     public ResponseEntity<Faculty> getFaculty(@PathVariable long id) {
         Faculty faculty = facultyService.findFaculty(id);
         if (faculty == null) {
@@ -27,12 +27,12 @@ public class FacultyController {
         return ResponseEntity.ok(faculty);
     }
 
-    @PostMapping
-    public Faculty createFaculty(@RequestParam long id, @RequestParam String name, @RequestParam String color) {
-        return facultyService.addFaculty(id, name, color);
+    @PostMapping// POST http://localhost:8080/faculty
+    public Faculty createFaculty(@RequestBody Faculty faculty) {
+        return facultyService.addFaculty(faculty);
     }
 
-    @PutMapping
+    @PutMapping // PUT http://localhost:8080/faculty
     public ResponseEntity<Faculty> editFaculty(@RequestBody Faculty faculty) {
         Faculty foundFaculty = facultyService.editFaculty(faculty);
         if (foundFaculty == null) {
@@ -41,16 +41,18 @@ public class FacultyController {
         return ResponseEntity.ok(faculty);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity deleteFaculty(@PathVariable long id) {
+    @DeleteMapping("{id}")// DELETE http://localhost:8080/faculty/1
+    public ResponseEntity<?> deleteFaculty(@PathVariable long id) {
         facultyService.deleteFaculty(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public ResponseEntity<Collection<Faculty>> findFacultiesByColorOrName(@RequestParam(required = false) String color, @RequestParam(required = false) String name) {
-        if (color != null && !color.isBlank()) {
-            return ResponseEntity.ok(facultyService.findByColorIgnoreCase(color));
+    // GET http://localhost:8080/faculty or http://localhost:8080/faculty/red or http://localhost:8080/faculty/Griffindor
+    public ResponseEntity<Collection<Faculty>> findFacultiesByColourOrName(@RequestParam(required = false) String colour,
+                                                                          @RequestParam(required = false) String name) {
+        if (colour != null && !colour.isBlank()) {
+            return ResponseEntity.ok(facultyService.findByColourIgnoreCase(colour));
         }
         if (name != null && !name.isBlank()) {
             return ResponseEntity.ok(facultyService.findByNameIgnoreCase(name));
@@ -58,7 +60,7 @@ public class FacultyController {
         return ResponseEntity.ok(facultyService.getAll());
     }
 
-    @GetMapping("/{facultyId}/faculty")
+    @GetMapping("/{facultyId}/faculty")// GET http://localhost:8080/faculty/1/faculty
     public Collection<Student> findStudentsByFacultyId(@PathVariable long facultyId) {
         return facultyService.findStudentsByFacultyId(facultyId);
     }
