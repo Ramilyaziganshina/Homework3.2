@@ -2,7 +2,6 @@ package ru.hogwarts.school.controller;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -12,11 +11,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repositories.AvatarRepository;
-import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.repositories.StudentRepository;
-import ru.hogwarts.school.service.AvatarService;
-import ru.hogwarts.school.service.FacultyService;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
@@ -28,32 +23,17 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+@WebMvcTest(controllers = StudentController.class)
 class StudentControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private FacultyRepository facultyRepository;
-
-    @MockBean
     private StudentRepository studentRepository;
-
-    @MockBean
-    private AvatarRepository avatarRepository;
-
-    @SpyBean
-    private FacultyService facultyService;
 
     @SpyBean
     private StudentService studentService;
-
-    @SpyBean
-    private AvatarService avatarService;
-
-    @InjectMocks
-    private FacultyController facultyController;
 
     @Test
     void getStudent() throws Exception {
@@ -132,7 +112,27 @@ class StudentControllerTest {
     }
 
     @Test
-    void deleteStudent() {
+    void deleteStudent() throws Exception {
+        final String name = "Harry";
+        final int age = 11;
+        final long id = 1;
+
+        Student student = new Student();
+        student.setId(id);
+        student.setName(name);
+        student.setAge(age);
+
+        JSONObject facultyObject = new JSONObject();
+        facultyObject.put("id", id);
+        facultyObject.put("name", name);
+        facultyObject.put("age", age);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/student/" + id)
+                        .content(facultyObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -153,7 +153,7 @@ class StudentControllerTest {
         when(studentRepository.findStudentsByAgeBetween(age, age2)).thenReturn(students);
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/student" + age + "/" + age2)
+                        .get("/student/" + age + "/" + age2)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpectAll(status().isOk());
     }

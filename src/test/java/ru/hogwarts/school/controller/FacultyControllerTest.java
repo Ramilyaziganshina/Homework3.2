@@ -2,7 +2,6 @@ package ru.hogwarts.school.controller;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -12,12 +11,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
-import ru.hogwarts.school.repositories.AvatarRepository;
 import ru.hogwarts.school.repositories.FacultyRepository;
-import ru.hogwarts.school.repositories.StudentRepository;
-import ru.hogwarts.school.service.AvatarService;
 import ru.hogwarts.school.service.FacultyService;
-import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
 import java.util.List;
@@ -28,7 +23,7 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest
+@WebMvcTest(controllers = FacultyController.class)
 class FacultyControllerTest {
 
     @Autowired
@@ -37,23 +32,8 @@ class FacultyControllerTest {
     @MockBean
     private FacultyRepository facultyRepository;
 
-    @MockBean
-    private StudentRepository studentRepository;
-
-    @MockBean
-    private AvatarRepository avatarRepository;
-
     @SpyBean
     private FacultyService facultyService;
-
-    @SpyBean
-    private StudentService studentService;
-
-    @SpyBean
-    private AvatarService avatarService;
-
-    @InjectMocks
-    private FacultyController facultyController;
 
     @Test
     void getFaculty() throws Exception {
@@ -127,6 +107,30 @@ class FacultyControllerTest {
     }
 
     @Test
+    void deleteFaculty() throws Exception {
+        final String name = "Huffelpuff";
+        final String colour = "yellow";
+        final long id = 1;
+
+        Faculty faculty = new Faculty();
+        faculty.setId(id);
+        faculty.setName(name);
+        faculty.setColour(colour);
+
+        JSONObject facultyObject = new JSONObject();
+        facultyObject.put("id", id);
+        facultyObject.put("name", name);
+        facultyObject.put("colour", colour);
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/faculty/" + id)
+                        .content(facultyObject.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void findFacultiesByColourOrName_getAll() throws Exception {
         final String name = "Huffelpuff";
         final String colour = "yellow";
@@ -176,8 +180,7 @@ class FacultyControllerTest {
         final long id = 1;
 
         Collection<Faculty> faculties = List.of(new Faculty[]{
-                new Faculty(id, name, colour)
-        });
+                new Faculty(id, name, colour)});
 
         JSONObject facultyObject = new JSONObject();
         facultyObject.put("name", name);
