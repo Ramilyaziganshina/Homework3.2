@@ -19,6 +19,10 @@ public class Faculty {
     @OneToMany(mappedBy = "faculty", fetch = FetchType.LAZY)
     private Collection<Student> students;
 
+    public void setStudents(Collection<Student> students) {
+        this.students = students;
+    }
+
     public Faculty() {
     }
 

@@ -1,5 +1,6 @@
 package ru.hogwarts.school.controller;
 
+import org.checkerframework.checker.units.qual.A;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
 import ru.hogwarts.school.service.StudentService;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -168,9 +170,11 @@ class StudentControllerTest {
         final String studentName = "Penelopa";
         final int age = 13;
 
+        Student mockStudent = new Student(studentId, studentName, age);
+
         Faculty faculty = new Faculty(id, name, colour);
-        Collection<Faculty> faculties = null;
-        faculties.add(faculty);
+
+        mockStudent.setFaculty(faculty);
 
         JSONObject studentObject = new JSONObject();
         studentObject.put("id", studentId);
@@ -182,10 +186,10 @@ class StudentControllerTest {
         facultyObject.put("name", name);
         facultyObject.put("colour", colour);
 
-        when(studentRepository.findById(studentId).orElse(null).getFaculty()).thenReturn(faculty);
+        when(studentRepository.findById(id)).thenReturn(Optional.of(mockStudent));
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/" + studentId + "/students")
+                        .get("/student/" + studentId + "/students")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpectAll(status().isOk());
     }

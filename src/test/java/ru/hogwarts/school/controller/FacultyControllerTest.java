@@ -14,6 +14,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
 import ru.hogwarts.school.service.FacultyService;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -204,9 +205,13 @@ class FacultyControllerTest {
         final String studentName = "Penelopa";
         final int age = 13;
 
+        Faculty mockFaculty = new Faculty(id, name, colour);
+
         Student student = new Student(studentId, studentName, age);
-        Collection<Student> students = null;
+        Collection<Student> students = new ArrayList<>();
         students.add(student);
+
+        mockFaculty.setStudents(students);
 
         JSONObject studentObject = new JSONObject();
         studentObject.put("id", studentId);
@@ -217,7 +222,7 @@ class FacultyControllerTest {
         facultyObject.put("name", name);
         facultyObject.put("colour", colour);
 
-        when(facultyRepository.findById(id).orElse(null).getStudents()).thenReturn(students);
+        when(facultyRepository.findById(id)).thenReturn(Optional.of(mockFaculty));
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/faculty/" + id + "/faculty")
