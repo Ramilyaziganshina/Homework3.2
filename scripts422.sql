@@ -1,12 +1,14 @@
-CREATE TABLE person (
-    name TEXT,
-    age INTEGER,
-    driver_license BOOLEAN,
-    car_brand_model TEXT
-);
-CREATE TABLE car (
+CREATE TABLE cars (
+    car_id SERIAL PRIMARY KEY,
     brand_model TEXT,
     price NUMERIC
 );
-select person.name, person.age, person.driver_license, person.car_brand_model, car.price
-from person INNER JOIN car ON person.car_brand_model = car.brand_model;
+CREATE TABLE person (
+    person_id SERIAL,
+    name TEXT PRIMARY KEY,
+    age INTEGER,
+    driver_license BOOLEAN,
+    car_id SERIAL REFERENCES cars (car_id)
+);
+select person.name, person.age, person.driver_license, person.car_id, cars.brand_model, cars.price
+from person INNER JOIN cars ON person.car_id = cars.car_id;
