@@ -64,4 +64,12 @@ public class FacultyController {
     public Collection<Student> findStudentsByFacultyId(@PathVariable long facultyId) {
         return facultyService.findStudentsByFacultyId(facultyId);
     }
+
+    @GetMapping("/{name}/{colour}")
+    public ResponseEntity<Collection<Faculty>> getFacultiesByColourAndNameIgnoreCase(
+            @PathVariable("name") String name,
+            @PathVariable("colour") String colour) {
+        Collection<Faculty> faculties = facultyService.getFacultiesByColourAndNameIgnoreCase(name, colour);
+        return ResponseEntity.ok(faculties);
+    }
 }

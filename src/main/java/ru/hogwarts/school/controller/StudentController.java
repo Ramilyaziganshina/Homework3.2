@@ -75,4 +75,10 @@ public class StudentController {
     public Collection<Student> getFiveLastStudents() {
         return studentService.getFiveLastStudens();
     }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<Collection<Student>> getStudentsByName(@PathVariable("name") String name) {
+        Collection<Student> students = studentService.getStudentsByName(name);
+        return ResponseEntity.ok(students);
+    }
 }

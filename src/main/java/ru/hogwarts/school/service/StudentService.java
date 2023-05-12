@@ -61,4 +61,8 @@ public class StudentService {
     public Collection<Student> getFiveLastStudens() {
         return studentRepository.getFiveLastStudents();
     }
+
+    public Collection<Student> getStudentsByName(String name) {
+        return studentRepository.getStudentsByName(name);
+    }
 }
