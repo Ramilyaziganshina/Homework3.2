@@ -30,6 +30,7 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public Faculty findFaculty(long id) {
         logger.info("The method findFaculty is called");
+        logger.warn("There is no faculty with id {} ", id);
         return facultyRepository.findById(id).orElse(null);
     }
 
@@ -42,12 +43,14 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public void deleteFaculty(long id) {
         logger.info("The method deleteFaculty is called");
+        logger.error("There is no faculty with id {} ", id);
         facultyRepository.deleteById(id);
     }
 
     @Override
     public Collection<Faculty> findByColour(String colour) {
         logger.info("The method findByColour is called");
+        logger.error("There is no faculty with colour {} ", colour);
         return facultyRepository.findAll().stream()
                 .filter(f -> f.getColour().equals(colour)).collect(Collectors.toList());
     }
@@ -61,24 +64,28 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     public Collection<Faculty> findByColourIgnoreCase(String colour) {
         logger.info("The method findByColourIgnoreCase is called");
+        logger.error("There is no faculty with colour {} ", colour);
         return facultyRepository.findByColourIgnoreCase(colour);
     }
 
     @Override
     public Collection<Faculty> findByNameIgnoreCase(String name) {
         logger.info("The method findByNameIgnoreCase is called");
+        logger.error("There is no faculty with name {} ", name);
         return facultyRepository.findByNameIgnoreCase(name);
     }
 
     @Override
     public Collection<Student> findStudentsByFacultyId(long facultyId) {
         logger.info("The method findStudentsByFacultyId is called");
+        logger.error("There is no students in faculty with id {} ", facultyId);
         return facultyRepository.findById(facultyId).orElse(null).getStudents();
     }
 
     @Override
     public Collection<Faculty> getFacultiesByColourAndNameIgnoreCase(String name, String colour) {
         logger.info("The method getFacultiesByColourAndNameIgnoreCase is called");
+        logger.error("There is no faculty with name {} and colour {}", name, colour);
         return facultyRepository.getFacultiesByColourAndNameIgnoreCase(name, colour);
     }
 }

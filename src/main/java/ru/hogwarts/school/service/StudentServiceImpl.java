@@ -25,15 +25,15 @@ public class StudentServiceImpl implements StudentService {
     public Student addStudent(Student student) {
         logger.info("The method addStudent is called");
         Student studentForAdd = studentRepository.save(student);
-        logger.info("The student {} added", studentForAdd);
+        logger.debug("The student {} is added", studentForAdd);
         return studentForAdd;
     }
 
     @Override
     public Student findStudent(long id) {
         logger.info("The method findStudent is called with id {}", id);
+        logger.error("There is not student with id {}", id);
         Student student = studentRepository.findById(id).orElse(null);
-        logger.info("The student with id{}: {}", id, student);
         return student;
     }
 
@@ -46,12 +46,14 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteStudent(long id) {
         logger.info("The method deleteStudent is called");
+        logger.error("There is not student with id {}", id);
         studentRepository.deleteById(id);
     }
 
     @Override
     public Collection<Student> findByAge(int age) {
         logger.info("The method findByAge is called");
+        logger.error("There is not student with age {}", age);
         return studentRepository.findAll().stream()
                 .filter(s -> s.getAge() == age).collect(Collectors.toList());
     }
@@ -65,12 +67,14 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Collection<Student> findByAgeBetween(Integer age, Integer age2) {
         logger.info("The method findByAgeBetween is called");
+        logger.error("There is not student with age between {} and {}", age, age2);
         return studentRepository.findStudentsByAgeBetween(age, age2);
     }
 
     @Override
     public Faculty findFacultyByStudent(long studentId) {
         logger.info("The method findFacultyByStudent is called");
+        logger.error("Student with id {} is not assigned faculty", studentId);
         return studentRepository.findById(studentId).orElse(null).getFaculty();
     }
 
@@ -95,6 +99,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Collection<Student> getStudentsByName(String name) {
         logger.info("The method getStudentsByName is called");
+        logger.error("There is not student with name {}", name);
         return studentRepository.getStudentsByName(name);
     }
 }

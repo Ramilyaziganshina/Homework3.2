@@ -40,6 +40,7 @@ public class AvatarServiceImpl implements AvatarService{
     @Override
     public Avatar findAvatar(long studentId) {
         logger.info("The method findAvatar is called");
+        logger.error("There is not student avatar with student id {}", studentId);
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
