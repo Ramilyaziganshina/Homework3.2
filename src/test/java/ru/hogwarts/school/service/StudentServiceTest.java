@@ -15,7 +15,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-@ContextConfiguration(classes = {StudentService.class})
+@ContextConfiguration(classes = {StudentServiceImpl.class})
 @ExtendWith(SpringExtension.class)
 class StudentServiceTest {
 
