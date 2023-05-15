@@ -32,8 +32,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Student findStudent(long id) {
         logger.info("The method findStudent is called with id {}", id);
-        logger.error("There is not student with id {}", id);
         Student student = studentRepository.findById(id).orElse(null);
+        if (student == null) {
+            logger.error("There is not student with id {}", id);
+        }
         return student;
     }
 
@@ -46,16 +48,18 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteStudent(long id) {
         logger.info("The method deleteStudent is called");
-        logger.error("There is not student with id {}", id);
         studentRepository.deleteById(id);
     }
 
     @Override
     public Collection<Student> findByAge(int age) {
         logger.info("The method findByAge is called");
-        logger.error("There is not student with age {}", age);
-        return studentRepository.findAll().stream()
+        Collection<Student> students = studentRepository.findAll().stream()
                 .filter(s -> s.getAge() == age).collect(Collectors.toList());
+        if (students == null) {
+            logger.error("There is not student with age {}", age);
+        }
+        return students;
     }
 
     @Override
@@ -67,21 +71,31 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Collection<Student> findByAgeBetween(Integer age, Integer age2) {
         logger.info("The method findByAgeBetween is called");
-        logger.error("There is not student with age between {} and {}", age, age2);
-        return studentRepository.findStudentsByAgeBetween(age, age2);
+        Collection<Student> students = studentRepository.findStudentsByAgeBetween(age, age2);
+        if (students == null) {
+            logger.error("There is not student with age between {} and {}", age, age2);
+        }
+        return students;
     }
 
     @Override
     public Faculty findFacultyByStudent(long studentId) {
         logger.info("The method findFacultyByStudent is called");
-        logger.error("Student with id {} is not assigned faculty", studentId);
-        return studentRepository.findById(studentId).orElse(null).getFaculty();
+        Faculty faculty = studentRepository.findById(studentId).orElse(null).getFaculty();
+        if (faculty == null) {
+            logger.error("Student with id {} is not assigned faculty", studentId);
+        }
+        return faculty;
     }
 
     @Override
     public double getAverageAge() {
         logger.info("The method getAverageAge is called");
-        return studentRepository.getAverageAge();
+        double averageAge = studentRepository.getAverageAge();
+        if (averageAge == 0.0) {
+            logger.error("There is no students");
+        }
+        return averageAge;
     }
 
     @Override
@@ -99,7 +113,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public Collection<Student> getStudentsByName(String name) {
         logger.info("The method getStudentsByName is called");
-        logger.error("There is not student with name {}", name);
-        return studentRepository.getStudentsByName(name);
+        Collection<Student> students = studentRepository.getStudentsByName(name);
+        if (students == null) {
+            logger.error("There is not student with name {}", name);
+        }
+        return students;
     }
 }
