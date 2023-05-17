@@ -8,6 +8,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.StudentRepository;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -121,9 +122,10 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Collection<Student> getStudentsWithNamesStartedA() {
+    public List<String> getStudentsWithNamesStartedA() {
         return studentRepository.findAll().stream()
-                .filter(student -> student.getName().toUpperCase().startsWith("A"))
+                .map(Student :: getName)
+                .filter(n -> n.toUpperCase().startsWith("A"))
                 .sorted()
                 .collect(Collectors.toList());
     }

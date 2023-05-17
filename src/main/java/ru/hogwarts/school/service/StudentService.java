@@ -4,6 +4,7 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface StudentService {
     Student addStudent(Student student);
@@ -18,5 +19,5 @@ public interface StudentService {
     int getCountOfStudents();
     Collection<Student> getFiveLastStudens();
     Collection<Student> getStudentsByName(String name);
-    Collection<Student> getStudentsWithNamesStartedA();
+    List<String> getStudentsWithNamesStartedA();
 }

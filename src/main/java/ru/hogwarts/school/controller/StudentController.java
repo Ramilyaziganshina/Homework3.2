@@ -7,6 +7,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("student")
@@ -83,8 +84,8 @@ public class StudentController {
     }
 
     @GetMapping("/Aname")
-    public ResponseEntity<Collection<Student>> getStudentsWithNamesStartedA() {
-        Collection<Student> students = studentService.getStudentsWithNamesStartedA();
+    public ResponseEntity<List<String>> getStudentsWithNamesStartedA() {
+        List<String> students = studentService.getStudentsWithNamesStartedA();
         return ResponseEntity.ok(students);
     }
 }
