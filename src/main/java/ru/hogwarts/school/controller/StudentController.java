@@ -81,4 +81,10 @@ public class StudentController {
         Collection<Student> students = studentService.getStudentsByName(name);
         return ResponseEntity.ok(students);
     }
+
+    @GetMapping("/Aname")
+    public ResponseEntity<Collection<Student>> getStudentsWithNamesStartedA() {
+        Collection<Student> students = studentService.getStudentsWithNamesStartedA();
+        return ResponseEntity.ok(students);
+    }
 }

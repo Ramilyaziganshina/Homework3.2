@@ -119,4 +119,12 @@ public class StudentServiceImpl implements StudentService {
         }
         return students;
     }
+
+    @Override
+    public Collection<Student> getStudentsWithNamesStartedA() {
+        return studentRepository.findAll().stream()
+                .filter(student -> student.getName().toUpperCase().startsWith("A"))
+                .sorted()
+                .collect(Collectors.toList());
+    }
 }

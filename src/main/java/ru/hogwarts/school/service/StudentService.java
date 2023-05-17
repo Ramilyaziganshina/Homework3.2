@@ -18,4 +18,5 @@ public interface StudentService {
     int getCountOfStudents();
     Collection<Student> getFiveLastStudens();
     Collection<Student> getStudentsByName(String name);
+    Collection<Student> getStudentsWithNamesStartedA();
 }
