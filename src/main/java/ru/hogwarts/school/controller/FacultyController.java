@@ -8,6 +8,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("faculty")
@@ -71,5 +72,10 @@ public class FacultyController {
             @PathVariable("colour") String colour) {
         Collection<Faculty> faculties = facultyService.getFacultiesByColourAndNameIgnoreCase(name, colour);
         return ResponseEntity.ok(faculties);
+    }
+
+    @GetMapping("/theLongestName")
+    public Optional<String> theLongestNameOfFaculty() {
+        return facultyService.theLongestNameOfFaculty();
     }
 }

@@ -8,7 +8,11 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repositories.FacultyRepository;
 
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.maxBy;
 
 @Service
 public class FacultyServiceImpl implements FacultyService {
@@ -104,5 +108,14 @@ public class FacultyServiceImpl implements FacultyService {
             logger.error("There is no faculty with name {} and colour {}", name, colour);
         }
         return faculties;
+    }
+
+    @Override
+    public Optional<String> theLongestNameOfFaculty() {
+        Optional<String> theLongestName =
+                facultyRepository.findAll().stream()
+                        .map(Faculty::getName)
+                        .collect(maxBy(Comparator.naturalOrder()));
+        return theLongestName;
     }
 }
