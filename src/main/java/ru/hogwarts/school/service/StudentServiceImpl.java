@@ -162,7 +162,33 @@ public class StudentServiceImpl implements StudentService {
                 .start();
     }
 
+    public void printAllSync() {
+        List<Student> students = studentRepository.findAll();
+        System.out.println(students);
+
+        printStudentSync(students.get(0));
+        printStudentSync(students.get(1));
+
+        new Thread(() -> {
+            printStudentSync(students.get(2));
+            printStudentSync(students.get(3));
+        })
+                .start();
+
+        new Thread(() -> {
+            printStudentSync(students.get(4));
+            printStudentSync(students.get(5));
+        })
+                .start();
+    }
+
     private void printStudent(Student student) {
         System.out.println(Thread.currentThread().getName() + " " + student);
+    }
+
+    private void printStudentSync(Student student) {
+        synchronized (this) {
+            System.out.println(Thread.currentThread().getName() + " " + student);
+        }
     }
 }

@@ -98,4 +98,9 @@ public class StudentController {
     public void printAll() {
         studentService.printAll();
     }
+
+    @GetMapping("/printAllSync")
+    public void printAllSync() {
+        studentService.printAllSync();
+    }
 }
