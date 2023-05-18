@@ -141,4 +141,28 @@ public class StudentServiceImpl implements StudentService {
         double averageAge = studentAgeSum / countOfStudents;
         return averageAge;
     }
+
+    public void printAll() {
+        List<Student> students = studentRepository.findAll();
+        System.out.println(students);
+
+        printStudent(students.get(0));
+        printStudent(students.get(1));
+
+        new Thread(() -> {
+            printStudent(students.get(2));
+            printStudent(students.get(3));
+        })
+                .start();
+
+        new Thread(() -> {
+            printStudent(students.get(4));
+            printStudent(students.get(5));
+        })
+                .start();
+    }
+
+    private void printStudent(Student student) {
+        System.out.println(Thread.currentThread().getName() + " " + student);
+    }
 }
