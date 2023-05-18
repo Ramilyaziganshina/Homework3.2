@@ -111,11 +111,12 @@ public class FacultyServiceImpl implements FacultyService {
     }
 
     @Override
-    public Optional<String> theLongestNameOfFaculty() {
-        Optional<String> theLongestName =
+    public String theLongestNameOfFaculty() {
+        String theLongestName =
                 facultyRepository.findAll().stream()
                         .map(Faculty::getName)
-                        .collect(maxBy(Comparator.naturalOrder()));
+                        .max(Comparator.comparingInt(String::length))
+                        .orElse("no name");
         return theLongestName;
     }
 }

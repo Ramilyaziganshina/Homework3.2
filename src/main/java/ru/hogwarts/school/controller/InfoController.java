@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.hogwarts.school.service.PortService;
 
 @RestController
-@RequestMapping("/getPort")
+@RequestMapping
 public class InfoController {
 
     private final PortService portService;
@@ -18,9 +18,14 @@ public class InfoController {
         this.portService = portService;
     }
 
-    @GetMapping
+    @GetMapping("/getPort")
     public ResponseEntity<Integer> getPort() {
         int port = portService.getPort();
         return ResponseEntity.ok(port);
+    }
+
+    @GetMapping("/getSum")
+    public Integer getSum() {
+        return portService.sum();
     }
 }
