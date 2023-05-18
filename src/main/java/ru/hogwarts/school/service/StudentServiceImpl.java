@@ -129,4 +129,16 @@ public class StudentServiceImpl implements StudentService {
                 .sorted()
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public double averageAgeOfStudents() {
+        Integer studentAgeSum = studentRepository.findAll().stream()
+                .map(Student :: getAge)
+                .reduce(0, Integer :: sum);
+        Integer countOfStudents = Math.toIntExact(studentRepository.findAll().stream()
+                .map(Student::getAge)
+                .count());
+        double averageAge = studentAgeSum / countOfStudents;
+        return averageAge;
+    }
 }

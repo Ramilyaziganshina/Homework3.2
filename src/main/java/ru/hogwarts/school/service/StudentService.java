@@ -20,4 +20,5 @@ public interface StudentService {
     Collection<Student> getFiveLastStudens();
     Collection<Student> getStudentsByName(String name);
     List<String> getStudentsWithNamesStartedA();
+    double averageAgeOfStudents();
 }

@@ -88,4 +88,9 @@ public class StudentController {
         List<String> students = studentService.getStudentsWithNamesStartedA();
         return ResponseEntity.ok(students);
     }
+
+    @GetMapping("/averageAge")
+    public double getAverageAgeOfStudents() {
+        return studentService.averageAgeOfStudents();
+    }
 }
